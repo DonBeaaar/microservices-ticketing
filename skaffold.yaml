@@ -7,8 +7,6 @@ deploy:
 build:
   local:
     push: false
-  # googleCloudBuild:
-  #   projectId: ticketing-dev-326801
   artifacts:
     - image: bearshadow/auth
       context: auth
@@ -16,5 +14,5 @@ build:
         dockerfile: Dockerfile
       sync:
         manual:
-          - src: "src/**/*.ts"
+          - src: "***/*.js"
             dest: .
