@@ -16,3 +16,11 @@ build:
         manual:
           - src: "***/*.js"
             dest: .
+    - image: bearshadow/ticketing-client
+      context: client
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: '**/*.js'
+            dest: .
