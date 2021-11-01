@@ -6,6 +6,8 @@ import {
   requireAuth,
 } from "@fd3tickets/common";
 import { Order } from "../models/order";
+import { natsWrapper } from "../nats-wrapper";
+import { OrderCancelledPublisher } from "../events/publisher/order-cancelled-publisher";
 
 const router = Router();
 
@@ -13,7 +15,7 @@ router.delete(
   "/api/orders/:orderId",
   requireAuth,
   async (req: Request, res: Response) => {
-    const order = await Order.findById(req.params.orderId);
+    const order = await Order.findById(req.params.orderId).populate("ticket");
 
     if (!order) {
       throw new NotFoundError();
@@ -23,6 +25,14 @@ router.delete(
     }
     order.status = OrderStatus.Cancelled;
     await order.save();
+
+    new OrderCancelledPublisher(natsWrapper.client).publish({
+      id: order.id,
+      ticket: {
+        id: order.ticket.id,
+      },
+    });
+
     res.status(204).send(order);
   }
 );
