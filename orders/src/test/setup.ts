@@ -22,6 +22,7 @@ beforeAll(async () => {
     useUnifiedTopology: true,
   });
 });
+
 beforeEach(async () => {
   jest.clearAllMocks();
   const collections = await mongoose.connection.db.collections();
