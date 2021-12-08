@@ -50,7 +50,11 @@ router.post(
       jwt: userJwt
     };
 
-    res.status(200).send(existingUser);
+    console.log({
+      jwt: userJwt
+    })
+
+    res.status(200).send({id: existingUser.id, email: existingUser.email, jwt: userJwt});
   }
 );
 
